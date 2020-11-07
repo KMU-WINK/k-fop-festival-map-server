@@ -33,9 +33,7 @@ class Booth(models.Model):
 
 
 class Notice(models.Model):
-    no = models.IntegerField(null=False, verbose_name="공지 번호")
     name = models.CharField(max_length=100, null=False, verbose_name="공지 제목")
     description = models.TextField(null = False, blank=False, verbose_name="공지 내용")
     onclick_target = models.ForeignKey(Booth, on_delete=models.SET_NULL, null=True)
     phone = PhoneNumberField(blank=True, null=True, verbose_name="학생회 번호")
-
