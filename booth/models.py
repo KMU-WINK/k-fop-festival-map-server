@@ -5,7 +5,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 
-
 class Region(models.Model):
     host = models.ForeignKey(User, verbose_name="주최 집단", on_delete=models.CASCADE)
     code = models.CharField(max_length=50, null=False, unique=True, verbose_name="구역 코드")
@@ -19,7 +18,7 @@ class BoothCategory(models.Model):
 
 
 class Booth(models.Model):
-    host = models.ForeignKey(User, verbose_name="주최 집단", on_delete=models.CASCADE)  # 총학생호ㅔㅣ 번호
+    host = models.ForeignKey(User, verbose_name="주최 집단", on_delete=models.CASCADE)  # 총학생회 번호
     code = models.CharField(max_length=50, null=False, unique=True, verbose_name="부스 코드")
     category = models.ForeignKey(BoothCategory, null=True, on_delete=models.SET_NULL, verbose_name="부스 카테고리")
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
@@ -31,3 +30,12 @@ class Booth(models.Model):
     waiting = models.CharField(max_length=50, null=False, unique=True, verbose_name="운영 시간")
     phone = PhoneNumberField(blank=True, null=True, verbose_name="부스 문의 번호")
     # 첨부파일 추가
+
+
+class Notice(models.Model):
+    no = models.IntegerField(null=False, verbose_name="공지 번호")
+    name = models.CharField(max_length=100, null=False, verbose_name="공지 제목")
+    description = models.TextField(null = False, blank=False, verbose_name="공지 내용")
+    onclick_target = models.ForeignKey(Booth, on_delete=models.SET_NULL, null=True)
+    phone = PhoneNumberField(blank=True, null=True, verbose_name="학생회 번호")
+
