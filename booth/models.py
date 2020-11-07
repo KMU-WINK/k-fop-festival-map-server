@@ -31,3 +31,9 @@ class Booth(models.Model):
     waiting = models.CharField(max_length=50, null=False, unique=True, verbose_name="운영 시간")
     phone = PhoneNumberField(blank=True, null=True, verbose_name="부스 문의 번호")
     # 첨부파일 추가
+
+
+class Like(models.Model):
+    token = models.IntegerField(null=False, unique=True) #TODO.. foreign key로 변경
+    code = models.ForeignKey(Booth, verbose_name="부스 코드", on_delete=models.CASCADE)
+
