@@ -31,3 +31,8 @@ class Booth(models.Model):
     waiting = models.CharField(max_length=50, null=False, unique=True, verbose_name="운영 시간")
     phone = PhoneNumberField(blank=True, null=True, verbose_name="부스 문의 번호")
     # 첨부파일 추가
+
+class Review(models.Model):
+    stamp_id = models.CharField(max_length=10, null=False, unique=True, verbose_name="스탬프 uuid")
+    rating = models.PositiveIntegerField(verbose_name="평점")
+    review = models.TextField(verbose_name="평가")
