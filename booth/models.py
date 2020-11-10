@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
+import re
 
 
 # Create your models here.
-
 
 class Region(models.Model):
     host = models.ForeignKey(User, verbose_name="주최 집단", on_delete=models.CASCADE)
@@ -19,7 +19,7 @@ class BoothCategory(models.Model):
 
 
 class Booth(models.Model):
-    host = models.ForeignKey(User, verbose_name="주최 집단", on_delete=models.CASCADE)  # 총학생호ㅔㅣ 번호
+    host = models.ForeignKey(User, verbose_name="주최 집단", on_delete=models.CASCADE)  # 총학생회 번호
     code = models.CharField(max_length=50, null=False, unique=True, verbose_name="부스 코드")
     category = models.ForeignKey(BoothCategory, null=True, on_delete=models.SET_NULL, verbose_name="부스 카테고리")
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
@@ -30,4 +30,45 @@ class Booth(models.Model):
     is_open = models.BooleanField(default=True, verbose_name="운영 여부")
     waiting = models.CharField(max_length=50, null=False, unique=True, verbose_name="운영 시간")
     phone = PhoneNumberField(blank=True, null=True, verbose_name="부스 문의 번호")
+
+    # HashTag
+    hash_tag = models.CharField(max_length=100, null=True, blank=True, verbose_name="해쉬태그")
+    tag_set = models.ManyToManyField('HashTag', blank=True)
+
+    def tag_save(self):
+        tags = re.findall(r'#(\w+)\b', self.hash_tag)  # hash_tag 에서 해쉬태그 추출
+
+        if not tags:
+            return
+
+        for t in tags:
+            tag, tag_created = HashTag.objects.get_or_create(name=t)  # 신규 태그 instance 생성
+            self.tag_set.add(tag)  # ManyToManyField 에 인스턴스 추가 및 본인 tag_set 에 등록
     # 첨부파일 추가
+
+    
+class Review(models.Model):
+    stamp_id = models.CharField(max_length=10, null=False, unique=True, verbose_name="스탬프 uuid")
+    rating = models.PositiveIntegerField(verbose_name="평점")
+    review = models.TextField(verbose_name="평가")
+
+    
+class Like(models.Model):
+    token = models.IntegerField(null=False, unique=True) #TODO.. foreign key로 변경
+    code = models.ForeignKey(Booth, verbose_name="부스 코드", on_delete=models.CASCADE)
+
+    
+class Notice(models.Model):
+    name = models.CharField(max_length=100, null=False, verbose_name="공지 제목")
+    description = models.TextField(null = False, blank=False, verbose_name="공지 내용")
+    onclick_target = models.ForeignKey(Booth, on_delete=models.SET_NULL, null=True)
+    phone = PhoneNumberField(blank=True, null=True, verbose_name="학생회 번호")
+
+    
+class HashTag(models.Model):
+    # booth = models.ForeignKey(Booth, verbose_name="해쉬 태그", on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, null=True, verbose_name="해쉬태그 이름")
+
+    def __str__(self):
+        return self.name
+
