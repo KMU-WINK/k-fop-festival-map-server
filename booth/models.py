@@ -18,10 +18,9 @@ class BoothCategory(models.Model):
 
 
 class Booth(models.Model):
-    host = models.ForeignKey(AuthUser, verbose_name="주최 집단", on_delete=models.CASCADE, null=False)  # 총학생회 번호
+    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
     code = models.CharField(max_length=50, null=False, unique=True, verbose_name="부스 코드")
     category = models.ForeignKey(BoothCategory, null=True, on_delete=models.SET_NULL, verbose_name="부스 카테고리")
-    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=100, null=False, verbose_name="부스 이름")
     description = models.TextField(null=True, blank=True, verbose_name="부스 상세설명")
     open_at = models.DateTimeField(null=True, blank=True, verbose_name="오픈 시간")
