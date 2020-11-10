@@ -2,12 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 import re
+from guest.models import AuthUser
 
-
-# Create your models here.
 
 class Region(models.Model):
-    host = models.ForeignKey(User, verbose_name="주최 집단", on_delete=models.CASCADE)
+    host = models.ForeignKey(AuthUser, verbose_name="주최 집단", on_delete=models.CASCADE, null=False)
     code = models.CharField(max_length=50, null=False, unique=True, verbose_name="구역 코드")
     lat = models.DecimalField(max_digits=9, decimal_places=6, null=False, verbose_name="위도")
     long = models.DecimalField(max_digits=9, decimal_places=6, null=False, verbose_name="경도")
@@ -19,7 +18,7 @@ class BoothCategory(models.Model):
 
 
 class Booth(models.Model):
-    host = models.ForeignKey(User, verbose_name="주최 집단", on_delete=models.CASCADE)  # 총학생회 번호
+    host = models.ForeignKey(AuthUser, verbose_name="주최 집단", on_delete=models.CASCADE, null=False)  # 총학생회 번호
     code = models.CharField(max_length=50, null=False, unique=True, verbose_name="부스 코드")
     category = models.ForeignKey(BoothCategory, null=True, on_delete=models.SET_NULL, verbose_name="부스 카테고리")
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
@@ -55,7 +54,7 @@ class Review(models.Model):
     
 class Like(models.Model):
     token = models.IntegerField(null=False, unique=True) #TODO.. foreign key로 변경
-    code = models.ForeignKey(Booth, verbose_name="부스 코드", on_delete=models.CASCADE)
+    code = models.ForeignKey(Booth, verbose_name="부스 코드", on_delete=models.CASCADE, null=False)
 
     
 class Notice(models.Model):
