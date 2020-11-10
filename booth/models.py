@@ -44,20 +44,27 @@ class Booth(models.Model):
         for t in tags:
             tag, tag_created = HashTag.objects.get_or_create(name=t)  # 신규 태그 instance 생성
             self.tag_set.add(tag)  # ManyToManyField 에 인스턴스 추가 및 본인 tag_set 에 등록
-
     # 첨부파일 추가
 
+    
+class Review(models.Model):
+    stamp_id = models.CharField(max_length=10, null=False, unique=True, verbose_name="스탬프 uuid")
+    rating = models.PositiveIntegerField(verbose_name="평점")
+    review = models.TextField(verbose_name="평가")
 
+    
 class Like(models.Model):
     token = models.IntegerField(null=False, unique=True) #TODO.. foreign key로 변경
     code = models.ForeignKey(Booth, verbose_name="부스 코드", on_delete=models.CASCADE)
 
+    
 class Notice(models.Model):
     name = models.CharField(max_length=100, null=False, verbose_name="공지 제목")
     description = models.TextField(null = False, blank=False, verbose_name="공지 내용")
     onclick_target = models.ForeignKey(Booth, on_delete=models.SET_NULL, null=True)
     phone = PhoneNumberField(blank=True, null=True, verbose_name="학생회 번호")
 
+    
 class HashTag(models.Model):
     # booth = models.ForeignKey(Booth, verbose_name="해쉬 태그", on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=True, verbose_name="해쉬태그 이름")
