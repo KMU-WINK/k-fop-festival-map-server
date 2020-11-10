@@ -53,7 +53,7 @@ class Review(models.Model):
 
     
 class Like(models.Model):
-    token = models.IntegerField(null=False, unique=True) #TODO.. foreign key로 변경
+    owner = models.ForeignKey(AuthUser, on_delete=models.SET_NULL, null=False)
     code = models.ForeignKey(Booth, verbose_name="부스 코드", on_delete=models.CASCADE, null=False)
 
     
