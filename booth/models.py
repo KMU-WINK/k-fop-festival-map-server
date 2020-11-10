@@ -47,6 +47,11 @@ class Booth(models.Model):
 
     # 첨부파일 추가
 
+
+class Like(models.Model):
+    token = models.IntegerField(null=False, unique=True) #TODO.. foreign key로 변경
+    code = models.ForeignKey(Booth, verbose_name="부스 코드", on_delete=models.CASCADE)
+
 class Notice(models.Model):
     name = models.CharField(max_length=100, null=False, verbose_name="공지 제목")
     description = models.TextField(null = False, blank=False, verbose_name="공지 내용")
