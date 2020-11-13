@@ -70,3 +70,6 @@ class HashTag(models.Model):
     def __str__(self):
         return self.name
 
+class Stamp(models.Model):
+    owner = models.ForeignKey(AuthUser, on_delete=models.SET_NULL, null=True)
+    code = models.ForeignKey(Booth, verbose_name="부스 코드", on_delete=models.CASCADE, null=False)
