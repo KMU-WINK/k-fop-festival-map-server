@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from booth.urls import booth_router
 
 
 
@@ -28,7 +30,7 @@ schema_view = get_schema_view(
         default_version='v1',
         description="Test description",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
+        contact=openapi.Contact(email="kmucs.wink@gmail.com"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,
