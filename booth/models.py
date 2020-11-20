@@ -32,6 +32,10 @@ class Booth(models.Model):
     hash_tag = models.CharField(max_length=100, null=True, blank=True, verbose_name="해쉬태그")
     tag_set = models.ManyToManyField('HashTag', blank=True)
 
+    def save(self, *args, **kwargs): #Booth 저장 이전 tag 생성 및 저장
+        self.tag_save()
+        super(Video, self).save(*args, **kwargs)
+
     def tag_save(self):
         tags = re.findall(r'#(\w+)\b', self.hash_tag)  # hash_tag 에서 해쉬태그 추출
 
@@ -42,7 +46,6 @@ class Booth(models.Model):
             tag, tag_created = HashTag.objects.get_or_create(name=t)  # 신규 태그 instance 생성
             self.tag_set.add(tag)  # ManyToManyField 에 인스턴스 추가 및 본인 tag_set 에 등록
     # 첨부파일 추가
-
     
 class Review(models.Model):
     stamp_id = models.CharField(max_length=10, null=False, unique=True, verbose_name="스탬프 uuid")
