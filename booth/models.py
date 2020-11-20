@@ -4,7 +4,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 import re
 from guest.models import AuthUser
 
-
 class Region(models.Model):
     host = models.ForeignKey(AuthUser, verbose_name="주최 집단", on_delete=models.CASCADE, null=False)
     code = models.CharField(max_length=50, null=False, unique=True, verbose_name="구역 코드")
@@ -61,6 +60,7 @@ class Notice(models.Model):
     description = models.TextField(null = False, blank=False, verbose_name="공지 내용")
     onclick_target = models.ForeignKey(Booth, on_delete=models.SET_NULL, null=True)
     phone = PhoneNumberField(blank=True, null=True, verbose_name="학생회 번호")
+    created_at = models.DateTimeField(auto_now=True, null=False, verbose_name="작성 시간")
 
     
 class HashTag(models.Model):
@@ -70,3 +70,6 @@ class HashTag(models.Model):
     def __str__(self):
         return self.name
 
+class Stamp(models.Model):
+    owner = models.ForeignKey(AuthUser, on_delete=models.SET_NULL, null=True)
+    code = models.ForeignKey(Booth, verbose_name="부스 코드", on_delete=models.CASCADE, null=False)
