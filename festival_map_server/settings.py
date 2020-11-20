@@ -20,6 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+if 'SECRET_KEY' in os.environ:
+    SECRET_KEY = os.environ['SECRET_KEY'],
+    AWS_S3_HOST = os.environ['AWS_S3_HOST'],
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID'],
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY'],
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -135,13 +142,14 @@ AUTH_USER_MODEL = 'guest.AuthUser'
 AWS_REGION = 'ap-northeast-2'
 
 AWS_QUERYSTRING_AUTH = False
+AWS_STORAGE_BUCKET_NAME = 'kfop-storge'
 
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
 AWS_LOCATION = 'static'
-
+AWS_S3_CUSTOM_DOMAIN = 'kfop-storge.s3.amazonaws.com'
 # AWS_S3_CUSTOM_DOMAIN = 's3-ap-northeast-2.amazonaws.com/%s' % AWS_STORAGE_BUCKET_NAME
 #
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, 'static')
