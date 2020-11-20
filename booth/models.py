@@ -61,6 +61,8 @@ class Notice(models.Model):
     onclick_target = models.ForeignKey(Booth, on_delete=models.SET_NULL, null=True)
     phone = PhoneNumberField(blank=True, null=True, verbose_name="학생회 번호")
     created_at = models.DateTimeField(auto_now=True, null=False, verbose_name="작성 시간")
+    def __str__(self):
+        return self.description
 
     
 class HashTag(models.Model):
