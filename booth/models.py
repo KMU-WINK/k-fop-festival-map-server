@@ -34,7 +34,7 @@ class Booth(models.Model):
 
     def save(self, *args, **kwargs): #Booth 저장 이전 tag 생성 및 저장
         self.tag_save()
-        super(Video, self).save(*args, **kwargs)
+        super(Booth, self).save(*args, **kwargs)
 
     def tag_save(self):
         tags = re.findall(r'#(\w+)\b', self.hash_tag)  # hash_tag 에서 해쉬태그 추출
