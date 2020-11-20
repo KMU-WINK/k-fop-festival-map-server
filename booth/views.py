@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from booth.models import Region
-from rest_framework.permissions import BasePermission, IsAdminUser
+from rest_framework.permissions import BasePermission, IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication , BasicAuthentication
 from booth.serializers import RegionSerializer
 
